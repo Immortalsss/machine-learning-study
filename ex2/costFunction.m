@@ -5,7 +5,7 @@ function [J, grad] = costFunction(theta, X, y)
 %   w.r.t. to the parameters.
 
 % Initialize some useful values
-m = length(y); % number of training examples
+m = length(y); % 训练集大小
 
 % You need to return the following variables correctly 
 J = 0;
@@ -20,9 +20,11 @@ grad = zeros(size(theta));
 % Note: grad should have the same dimensions as theta
 %
 
+% 计算cost
+J = -1 * sum(y .* log(sigmoid(X*theta)) + (1-y) .* log(1-sigmoid(X*theta))) / m;
 
-
-
+% 计算gradient
+grad = X' * (sigmoid(X*theta) - y) / m;
 
 
 

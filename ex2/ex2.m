@@ -16,32 +16,31 @@
 %  or any other files other than those mentioned above.
 %
 
-%% Initialization
-clear ; close all; clc
+%% 初始化
+clear ; 
+close all;
+ clc
 
-%% Load Data
-%  The first two columns contains the exam scores and the third column
-%  contains the label.
+%% 加载数据
+%  前两列是考试分数，第三列是标签
 
 data = load('ex2data1.txt');
-X = data(:, [1, 2]); y = data(:, 3);
+X = data(:, [1, 2]); 
+y = data(:, 3);
 
-%% ==================== Part 1: Plotting ====================
-%  We start the exercise by first plotting the data to understand the 
-%  the problem we are working with.
+%% ==================== Part 1: 绘制 ====================
+%  开始编码之前，用绘图来帮助理解数据集合和了解问题
 
 fprintf(['Plotting data with + indicating (y = 1) examples and o ' ...
          'indicating (y = 0) examples.\n']);
 
 plotData(X, y);
 
-% Put some labels 
+% 添加一些标签
 hold on;
-% Labels and Legend
+% 标签和图例
 xlabel('Exam 1 score')
 ylabel('Exam 2 score')
-
-% Specified in plot order
 legend('Admitted', 'Not admitted')
 hold off;
 
@@ -49,21 +48,18 @@ fprintf('\nProgram paused. Press enter to continue.\n');
 pause;
 
 
-%% ============ Part 2: Compute Cost and Gradient ============
-%  In this part of the exercise, you will implement the cost and gradient
-%  for logistic regression. You neeed to complete the code in 
-%  costFunction.m
+%% ============ Part 2: 计算成本函数和梯度 ============
 
-%  Setup the data matrix appropriately, and add ones for the intercept term
+%  存储X的行列值
 [m, n] = size(X);
 
-% Add intercept term to x and X_test
+% 添加x0列，全为1
 X = [ones(m, 1) X];
 
-% Initialize fitting parameters
+% 初始化拟合参数theta，全为0
 initial_theta = zeros(n + 1, 1);
 
-% Compute and display initial cost and gradient
+% 计算并展示cost和gradient,此时theta为[0,0,0]
 [cost, grad] = costFunction(initial_theta, X, y);
 
 fprintf('Cost at initial theta (zeros): %f\n', cost);
@@ -72,7 +68,7 @@ fprintf('Gradient at initial theta (zeros): \n');
 fprintf(' %f \n', grad);
 fprintf('Expected gradients (approx):\n -0.1000\n -12.0092\n -11.2628\n');
 
-% Compute and display cost and gradient with non-zero theta
+% 计算并展示cost和gradient,此时theta为[-24,0.2,0.2]
 test_theta = [-24; 0.2; 0.2];
 [cost, grad] = costFunction(test_theta, X, y);
 
@@ -86,19 +82,16 @@ fprintf('\nProgram paused. Press enter to continue.\n');
 pause;
 
 
-%% ============= Part 3: Optimizing using fminunc  =============
-%  In this exercise, you will use a built-in function (fminunc) to find the
-%  optimal parameters theta.
+%% ============= Part 3: 用Octave函数fminunc进行优化  =============
 
 %  Set options for fminunc
 options = optimset('GradObj', 'on', 'MaxIter', 400);
 
-%  Run fminunc to obtain the optimal theta
-%  This function will return theta and the cost 
+% 利用fminunc获取最优的theta
 [theta, cost] = ...
 	fminunc(@(t)(costFunction(t, X, y)), initial_theta, options);
 
-% Print theta to screen
+% 输出最优的theta
 fprintf('Cost at theta found by fminunc: %f\n', cost);
 fprintf('Expected cost (approx): 0.203\n');
 fprintf('theta: \n');
@@ -106,44 +99,35 @@ fprintf(' %f \n', theta);
 fprintf('Expected theta (approx):\n');
 fprintf(' -25.161\n 0.206\n 0.201\n');
 
-% Plot Boundary
+% 画出边界
 plotDecisionBoundary(theta, X, y);
 
-% Put some labels 
+% 标签和图例 
 hold on;
-% Labels and Legend
 xlabel('Exam 1 score')
 ylabel('Exam 2 score')
-
-% Specified in plot order
 legend('Admitted', 'Not admitted')
 hold off;
 
 fprintf('\nProgram paused. Press enter to continue.\n');
 pause;
 
-%% ============== Part 4: Predict and Accuracies ==============
-%  After learning the parameters, you'll like to use it to predict the outcomes
-%  on unseen data. In this part, you will use the logistic regression model
-%  to predict the probability that a student with score 45 on exam 1 and 
-%  score 85 on exam 2 will be admitted.
+%% ============== Part 4: 预测和计算准确性 ==============
+%  预测数据，使用逻辑回归模型预测一个学生第一次考试45分，第二次考试85分是否被录取
 %
-%  Furthermore, you will compute the training and test set accuracies of 
-%  our model.
-%
-%  Your task is to complete the code in predict.m
+%  计算模型的准确性
 
-%  Predict probability for a student with score 45 on exam 1 
-%  and score 85 on exam 2 
 
+% 利用计算好的theta，代入sigmoid函数计算可能性
 prob = sigmoid([1 45 85] * theta);
 fprintf(['For a student with scores 45 and 85, we predict an admission ' ...
          'probability of %f\n'], prob);
 fprintf('Expected value: 0.775 +/- 0.002\n\n');
 
-% Compute accuracy on our training set
+% 计算我们训练集的准确性
 p = predict(theta, X);
 
+% 计算p和y中对应编号的值相等的个数
 fprintf('Train Accuracy: %f\n', mean(double(p == y)) * 100);
 fprintf('Expected accuracy (approx): 89.0\n');
 fprintf('\n');

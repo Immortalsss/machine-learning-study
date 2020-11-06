@@ -18,14 +18,17 @@
 %
 
 %% Initialization
-clear ; close all; clc
+clear; 
+close all; 
+clc;
 
 %% Load Data
 %  The first two columns contains the X values and the third column
 %  contains the label (y).
 
 data = load('ex2data2.txt');
-X = data(:, [1, 2]); y = data(:, 3);
+X = data(:, [1, 2]); 
+y = data(:, 3);
 
 plotData(X, y);
 
@@ -41,7 +44,7 @@ legend('y = 1', 'y = 0')
 hold off;
 
 
-%% =========== Part 1: Regularized Logistic Regression ============
+%% =========== Part 1: 正则化逻辑回归 ============
 %  In this part, you are given a dataset with data points that are not
 %  linearly separable. However, you would still like to use logistic
 %  regression to classify the data points.
@@ -53,18 +56,16 @@ hold off;
 
 % Add Polynomial Features
 
-% Note that mapFeature also adds a column of ones for us, so the intercept
-% term is handled
+% 从2维变换到28维
 X = mapFeature(X(:,1), X(:,2));
 
-% Initialize fitting parameters
+% 初始化参数theta
 initial_theta = zeros(size(X, 2), 1);
 
-% Set regularization parameter lambda to 1
+% 设置正则化参数lambda=1
 lambda = 1;
 
-% Compute and display initial cost and gradient for regularized logistic
-% regression
+% Compute and display initial cost and gradient for regularized logistic regression
 [cost, grad] = costFunctionReg(initial_theta, X, y, lambda);
 
 fprintf('Cost at initial theta (zeros): %f\n', cost);
@@ -77,8 +78,7 @@ fprintf(' 0.0085\n 0.0188\n 0.0001\n 0.0503\n 0.0115\n');
 fprintf('\nProgram paused. Press enter to continue.\n');
 pause;
 
-% Compute and display cost and gradient
-% with all-ones theta and lambda = 10
+% Compute and display cost and gradient with all-ones theta and lambda = 10
 test_theta = ones(size(X,2),1);
 [cost, grad] = costFunctionReg(test_theta, X, y, 10);
 
@@ -107,6 +107,8 @@ pause;
 initial_theta = zeros(size(X, 2), 1);
 
 % Set regularization parameter lambda to 1 (you should vary this)
+% lambda = 0 ---过拟合
+% lambda = 100 ---欠拟合
 lambda = 1;
 
 % Set Options
@@ -118,13 +120,11 @@ options = optimset('GradObj', 'on', 'MaxIter', 400);
 
 % Plot Boundary
 plotDecisionBoundary(theta, X, y);
+
 hold on;
 title(sprintf('lambda = %g', lambda))
-
-% Labels and Legend
 xlabel('Microchip Test 1')
 ylabel('Microchip Test 2')
-
 legend('y = 1', 'y = 0', 'Decision boundary')
 hold off;
 

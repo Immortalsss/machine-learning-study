@@ -15,9 +15,11 @@ p = zeros(m, 1);
 %               You should set p to a vector of 0's and 1's
 %
 
+% 计算X中sigmoid函数值大于0.5编号，表示录取
+k = find(sigmoid(X*theta) >= 0.5);
 
-
-
+% 置对应p矩阵中对应编号的值为1
+p(k) = 1;
 
 
 
