@@ -17,42 +17,37 @@
 %
 
 %% Initialization
-clear ; close all; clc
+clear ; close all; clc;
 
 %% Setup the parameters you will use for this part of the exercise
 input_layer_size  = 400;  % 20x20 Input Images of Digits
 num_labels = 10;          % 10 labels, from 1 to 10
                           % (note that we have mapped "0" to label 10)
 
-%% =========== Part 1: Loading and Visualizing Data =============
-%  We start the exercise by first loading and visualizing the dataset.
-%  You will be working with a dataset that contains handwritten digits.
-%
+%% =========== Part 1: 加载数据并显示 =============
 
-% Load Training Data
 fprintf('Loading and Visualizing Data ...\n')
 
+% 加载数据集
 load('ex3data1.mat'); % training data stored in arrays X, y
+% 取数据集行数5000
 m = size(X, 1);
 
-% Randomly select 100 data points to display
+% 将5000个数据打乱顺序
 rand_indices = randperm(m);
+
+% 选择打乱顺序后的前100个展示
 sel = X(rand_indices(1:100), :);
 
+% displayData将每一行映射成一个20像素乘20像素的灰度图像，显示这些图像
 displayData(sel);
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
-%% ============ Part 2a: Vectorize Logistic Regression ============
-%  In this part of the exercise, you will reuse your logistic regression
-%  code from the last exercise. You task here is to make sure that your
-%  regularized logistic regression implementation is vectorized. After
-%  that, you will implement one-vs-all classification for the handwritten
-%  digit dataset.
-%
+%% ============ Part 2a: 向量化逻辑回归 ============
 
-% Test case for lrCostFunction
+% 测试lrCostFunction
 fprintf('\nTesting lrCostFunction() with regularization');
 
 theta_t = [-2; -1; 1; 2];
@@ -70,7 +65,9 @@ fprintf(' 0.146561\n -0.548558\n 0.724722\n 1.398003\n');
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
-%% ============ Part 2b: One-vs-All Training ============
+
+
+%% ============ Part 2b: 一对多训练 ============
 fprintf('\nTraining One-vs-All Logistic Regression...\n')
 
 lambda = 0.1;

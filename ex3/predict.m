@@ -7,6 +7,8 @@ function p = predict(Theta1, Theta2, X)
 m = size(X, 1);
 num_labels = size(Theta2, 1);
 
+X = [ones(m,1),X];
+
 % You need to return the following variables correctly 
 p = zeros(size(X, 1), 1);
 
@@ -22,10 +24,13 @@ p = zeros(size(X, 1), 1);
 %
 
 
-
-
-
-
+type1 = sigmoid(X*Theta1');
+type1 = [ones(m,1), type1];
+type2 = sigmoid(type1*Theta2');
+for i = 1:m
+    A = type2(i,1:num_labels);
+    p(i) = find(A==max(A));
+end
 
 
 

@@ -17,7 +17,7 @@
 %
 
 %% Initialization
-clear ; close all; clc
+clear ; close all; clc;
 
 %% Setup the parameters you will use for this exercise
 input_layer_size  = 400;  % 20x20 Input Images of Digits
@@ -45,14 +45,17 @@ displayData(X(sel, :));
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
+
+
 %% ================ Part 2: Loading Pameters ================
-% In this part of the exercise, we load some pre-initialized 
-% neural network parameters.
+% In this part of the exercise, we load some pre-initialized neural network parameters.
 
 fprintf('\nLoading Saved Neural Network Parameters ...\n')
 
 % Load the weights into variables Theta1 and Theta2
 load('ex3weights.mat');
+
+
 
 %% ================= Part 3: Implement Predict =================
 %  After training the neural network, we would like to use it to predict
@@ -67,7 +70,7 @@ fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == y)) * 100);
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
-%  To give you an idea of the network's output, you can also run
+%  To give you an idea of the network’s output, you can also run
 %  through the examples one at the a time to see what it is predicting.
 
 %  Randomly permute examples
